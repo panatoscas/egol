@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "É Gol! 🇧🇷",
+    "slug": "egol",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#009C3B"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.egol.app",
+      "infoPlist": {
+        "NSUserNotificationUsageDescription": "Receba alertas em tempo real quando a Seleção Brasileira marcar gols!"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#009C3B"
+      },
+      "package": "com.egol.app",
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#FFD700",
+          "defaultChannel": "gols",
+          "sounds": []
+        }
+      ]
+    ],
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#FFD700",
+      "androidMode": "default"
+    }
+  }
+}
