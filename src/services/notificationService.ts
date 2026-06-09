@@ -6,7 +6,8 @@ import { Platform } from 'react-native';
 // Config global: como mostrar a notificação quando o app está em foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),

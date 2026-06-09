@@ -16,33 +16,51 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS } from '../theme/colors';
 import { RootStackParamList } from '../../App';
 import { useAuth } from '../context/AuthContext';
+import { ApiError } from '../services/api';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 export function LoginScreen() {
   const navigation = useNavigation<Nav>();
-  const { login: onLogin } = useAuth();
+  const { login, register } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
-    if (!email || !password) {
+    if (!email.trim() || !password) {
       Alert.alert('Atenção', 'Preencha e-mail e senha.');
       return;
     }
+    if (!isLogin && password.length < 6) {
+      Alert.alert('Atenção', 'A senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+
     setLoading(true);
-    // TODO: integrar com Firebase Auth / seu backend
-    setTimeout(() => {
+    try {
+      if (isLogin) {
+        await login(email.trim().toLowerCase(), password);
+      } else {
+        await register(email.trim().toLowerCase(), password, name.trim() || undefined);
+      }
+      // Navegação é tratada pelo App.tsx via estado do AuthContext
+    } catch (e) {
+      const message =
+        e instanceof ApiError
+          ? e.message
+          : 'Erro de conexão. Verifique sua internet e tente novamente.';
+      Alert.alert('Erro', message);
+    } finally {
       setLoading(false);
-      if (onLogin) onLogin();
-    }, 1200);
+    }
   };
 
   const handleGoogle = () => {
-    // TODO: integrar com Google Sign-In
+    // TODO: integrar com Google Sign-In (expo-auth-session)
     Alert.alert('Em breve!', 'Login com Google estará disponível no lançamento.');
   };
 
@@ -80,6 +98,21 @@ export function LoginScreen() {
               <Text style={styles.dividerText}>ou</Text>
               <View style={styles.dividerLine} />
             </View>
+
+            {/* Nome (só no cadastro) */}
+            {!isLogin && (
+              <>
+                <Text style={styles.label}>Nome (opcional)</Text>
+                <TextInput
+                  style={styles.input}
+                  value={name}
+                  onChangeText={setName}
+                  placeholder="Seu nome"
+                  placeholderTextColor={COLORS.textMuted}
+                  autoCapitalize="words"
+                />
+              </>
+            )}
 
             {/* Email */}
             <Text style={styles.label}>E-mail</Text>
@@ -125,7 +158,7 @@ export function LoginScreen() {
                 end={{ x: 1, y: 0 }}
               >
                 <Text style={styles.authBtnText}>
-                  {loading ? '🔄 Entrando...' : isLogin ? '⚽ ENTRAR' : '⚽ CRIAR CONTA'}
+                  {loading ? '🔄 Aguarde...' : isLogin ? '⚽ ENTRAR' : '⚽ CRIAR CONTA'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

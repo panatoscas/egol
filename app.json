@@ -6,11 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#009C3B"
-    },
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.egol.app",
@@ -23,6 +19,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#009C3B"
       },
+      "edgeToEdgeEnabled": true,
       "package": "com.egol.app",
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
@@ -35,6 +32,14 @@
     },
     "plugins": [
       [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#009C3B"
+        }
+      ],
+      [
         "expo-notifications",
         {
           "icon": "./assets/notification-icon.png",
@@ -43,11 +48,6 @@
           "sounds": []
         }
       ]
-    ],
-    "notification": {
-      "icon": "./assets/notification-icon.png",
-      "color": "#FFD700",
-      "androidMode": "default"
-    }
+    ]
   }
 }
